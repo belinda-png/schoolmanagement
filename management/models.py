@@ -103,3 +103,32 @@ class Reportcard(models.Model):
     term = models.CharField(max_length=20)
     def __str__(self):
         return f"{self.student.name} - {self.exam}"
+
+ACTIVITY_TYPE_CHOICES = [
+    ('Admission', 'Admission'),
+    ('Exam', 'Exam'),
+    ('Attendance', 'Attendance'),
+    ('Report Card', 'Report Card'),
+    ('Teacher Assignment', 'Teacher Assignment'),
+    ('Class Activity', 'Class Activity'),
+    ('Meeting', 'Meeting'),
+    ('Event', 'Event'),
+    ('Other', 'Other'),
+]
+
+class RecentActivity(models.Model):
+    activity_type = models.CharField(max_length=20, choices=ACTIVITY_TYPE_CHOICES)
+    title = models.CharField(max_length=200)
+    description = models.TextField()
+    date = models.DateTimeField(auto_now_add=True)
+    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, null=True, blank=True)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, null=True, blank=True)
+    classname = models.ForeignKey(ClassName, on_delete=models.CASCADE, null=True, blank=True)
+    is_active = models.BooleanField(default=True)
+    
+    class Meta:
+        ordering = ['-date']
+        verbose_name_plural = "Recent Activities"
+    
+    def __str__(self):
+        return f"{self.title} - {self.date.strftime('%Y-%m-%d %H:%M')}"

@@ -1,0 +1,150 @@
+{% extends 'management/base.html' %}
+
+{% block title %}Recent Activities - School Management{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1 class="page-title">Recent Activities</h1>
+    <a href="{% url 'addrecentactivity' %}" class="btn-primary">
+        <span>+</span> Add Activity
+    </a>
+</div>
+
+<div class="search-section">
+    <div class="search-bar">
+        <input type="text" class="search-input" placeholder="Search activities by title or description...">
+        <button class="filter-btn">Search</button>
+    </div>
+    
+    <div class="filter-buttons">
+        <button class="filter-btn active">All Activities</button>
+        <button class="filter-btn">Admission</button>
+        <button class="filter-btn">Exam</button>
+        <button class="filter-btn">Attendance</button>
+        <button class="filter-btn">Report Card</button>
+        <button class="filter-btn">Meeting</button>
+        <button class="filter-btn">Event</button>
+    </div>
+</div>
+
+<div class="table-container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ACTIVITY</th>
+                <th>TYPE</th>
+                <th>DATE & TIME</th>
+                <th>RELATED TO</th>
+                <th>STATUS</th>
+                <th>ACTIONS</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for activity in activities %}
+            <tr>
+                <td>
+                    <div class="student-info">
+                        <div class="avatar activity-avatar-{{ activity.activity_type|lower|slugify }}">
+                            {{ activity.activity_type|slice:":2"|upper }}
+                        </div>
+                        <div class="student-details">
+                            <h3>{{ activity.title }}</h3>
+                            <p>{{ activity.description|truncatewords:15 }}</p>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <span class="status-badge activity-type-{{ activity.activity_type|lower|slugify }}">
+                        {{ activity.activity_type }}
+                    </span>
+                </td>
+                <td>
+                    <div style="display: flex; flex-direction: column; gap: 4px;">
+                        <strong>{{ activity.date|date:"M d, Y" }}</strong>
+                        <small style="color: #64748b;">{{ activity.date|time:"H:i" }}</small>
+                    </div>
+                </td>
+                <td>
+                    <div style="display: flex; flex-direction: column; gap: 4px;">
+                        {% if activity.student %}
+                            <div style="display: flex; align-items: center; gap: 6px;">
+                                <svg width="14" height="14" fill="#64748b" viewBox="0 0 24 24">
+                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
+                                </svg>
+                                <span style="font-size: 14px;">{{ activity.student.name }}</span>
+                            </div>
+                        {% endif %}
+                        {% if activity.teacher %}
+                            <div style="display: flex; align-items: center; gap: 6px;">
+                                <svg width="14" height="14" fill="#64748b" viewBox="0 0 24 24">
+                                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                                </svg>
+                                <span style="font-size: 14px;">{{ activity.teacher.Name }}</span>
+                            </div>
+                        {% endif %}
+                        {% if activity.classname %}
+                            <div style="display: flex; align-items: center; gap: 6px;">
+                                <svg width="14" height="14" fill="#64748b" viewBox="0 0 24 24">
+                                    <path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82zM12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/>
+                                </svg>
+                                <span style="font-size: 14px;">{{ activity.classname.name }}</span>
+                            </div>
+                        {% endif %}
+                        {% if not activity.student and not activity.teacher and not activity.classname %}
+                            <span style="font-size: 14px; color: #64748b;">General</span>
+                        {% endif %}
+                    </div>
+                </td>
+                <td>
+                    {% if activity.is_active %}
+                        <span class="status-badge status-active">
+                            Active
+                        </span>
+                    {% else %}
+                        <span class="status-badge" style="background: #f3f4f6; color: #6b7280;">
+                            Inactive
+                        </span>
+                    {% endif %}
+                </td>
+                <td>
+                    <div class="action-buttons">
+                        <a href="{% url 'viewrecentactivity' activity.id %}" class="action-btn" title="View Details">
+                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                            </svg>
+                        </a>
+                        <a href="{% url 'updaterecentactivity' activity.id %}" class="action-btn" title="Edit">
+                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                            </svg>
+                        </a>
+                        <a href="{% url 'deleterecentactivity' activity.id %}" class="action-btn" title="Delete" style="color: #dc2626;">
+                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" style="text-align: center; padding: 40px; color: #64748b;">
+                    No activities found. <a href="{% url 'addrecentactivity' %}" style="color: #3b82f6;">Add your first activity</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div class="pagination">
+    <div class="pagination-info">
+        Showing 1 to {{ activities|length }} of {{ activities|length }} results
+    </div>
+    <div class="pagination-controls">
+        <button class="pagination-btn" disabled>Previous</button>
+        <button class="pagination-btn" disabled>Next</button>
+    </div>
+</div>
+{% endblock %}

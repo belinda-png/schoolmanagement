@@ -1,0 +1,94 @@
+{% extends 'management/base.html' %}
+
+{% block title %}Add Exam - School Management{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1 class="page-title">Schedule New Exam</h1>
+    <a href="{% url 'exam_list' %}" class="btn-primary" style="background: #64748b;">
+        <span>←</span> Back to Exams
+    </a>
+</div>
+
+<div class="table-container" style="max-width: 800px; margin: 0 auto;">
+    <form method="post" style="padding: 30px;">
+        {% csrf_token %}
+        
+        <div style="margin-bottom: 20px;">
+            <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #374151;">Exam Name *</label>
+            {{ form.name }}
+            <style>
+                #id_name { width: 100%; padding: 10px 15px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; }
+                #id_name:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); }
+            </style>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+            <div>
+                <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #374151;">Exam Type *</label>
+                {{ form.exam_type }}
+                <style>
+                    #id_exam_type { width: 100%; padding: 10px 15px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; }
+                    #id_exam_type:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); }
+                </style>
+            </div>
+            
+            <div>
+                <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #374151;">Subject *</label>
+                {{ form.subject }}
+                <style>
+                    #id_subject { width: 100%; padding: 10px 15px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; }
+                    #id_subject:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); }
+                </style>
+            </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px;">
+            <div>
+                <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #374151;">Exam Date *</label>
+                {{ form.exam_date }}
+                <style>
+                    #id_exam_date { width: 100%; padding: 10px 15px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; }
+                    #id_exam_date:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); }
+                </style>
+            </div>
+            
+            <div>
+                <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #374151;">Total Marks *</label>
+                {{ form.total_marks }}
+                <style>
+                    #id_total_marks { width: 100%; padding: 10px 15px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; }
+                    #id_total_marks:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); }
+                </style>
+            </div>
+        </div>
+
+        <div style="background: #f8fafc; padding: 20px; border-radius: 8px; margin-bottom: 30px;">
+            <h3 style="margin-bottom: 15px; color: #374151; font-size: 16px;">Exam Information</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; font-size: 14px; color: #64748b;">
+                <div>
+                    <strong>Duration:</strong> Typically 2-3 hours
+                </div>
+                <div>
+                    <strong>Format:</strong> Written examination
+                </div>
+                <div>
+                    <strong>Grading:</strong> Will be calculated automatically
+                </div>
+                <div>
+                    <strong>Results:</strong> Available within 7 days
+                </div>
+            </div>
+        </div>
+
+        <div style="display: flex; gap: 15px; justify-content: flex-end;">
+            <a href="{% url 'exam_list' %}" style="padding: 12px 24px; border: 1px solid #e2e8f0; background: white; border-radius: 8px; text-decoration: none; color: #64748b; font-weight: 500; transition: all 0.2s;">
+                Cancel
+            </a>
+            <button type="submit" class="btn-primary">
+                Schedule Exam
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

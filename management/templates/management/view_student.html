@@ -1,0 +1,129 @@
+{% extends 'management/base.html' %}
+
+{% block title %}View Student - {{ student_list.name }}{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1 class="page-title">Student Details</h1>
+    <div style="display: flex; gap: 10px;">
+        <a href="{% url 'updatestudent' student_list.id %}" class="btn-primary" style="background: #f59e0b;">
+            <span>✏️</span> Edit Student
+        </a>
+        <a href="{% url 'student_list' %}" class="btn-primary" style="background: #64748b;">
+            <span>←</span> Back to Students
+        </a>
+    </div>
+</div>
+
+<div style="display: grid; grid-template-columns: 1fr 2fr; gap: 30px;">
+    <!-- Student Profile Card -->
+    <div class="table-container">
+        <div style="padding: 30px; text-align: center;">
+            <div class="avatar" style="width: 80px; height: 80px; margin: 0 auto 20px; font-size: 24px; background: #3b82f6;">
+                {{ student_list.name|slice:":2"|upper }}
+            </div>
+            <h2 style="margin-bottom: 10px; color: #1e293b;">{{ student_list.name }}</h2>
+            <p style="color: #64748b; margin-bottom: 20px;">Admission #{{ student_list.admission_number }}</p>
+            
+            <div style="display: flex; justify-content: center; gap: 10px; margin-bottom: 20px;">
+                <span class="status-badge status-{{ student_list.status|lower }}">
+                    {{ student_list.status }}
+                </span>
+            </div>
+            
+            <div style="text-align: left; border-top: 1px solid #e2e8f0; padding-top: 20px;">
+                <div style="margin-bottom: 15px;">
+                    <strong style="color: #64748b; font-size: 12px; text-transform: uppercase;">Grade & Section</strong>
+                    <p style="margin: 5px 0; color: #1e293b;">{{ student_list.grade }} - {{ student_list.section }}</p>
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                    <strong style="color: #64748b; font-size: 12px; text-transform: uppercase;">Class</strong>
+                    <p style="margin: 5px 0; color: #1e293b;">{{ student_list.classname.name }}</p>
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                    <strong style="color: #64748b; font-size: 12px; text-transform: uppercase;">Class Teacher</strong>
+                    <p style="margin: 5px 0; color: #1e293b;">{{ student_list.class_teacher.Name }}</p>
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                    <strong style="color: #64748b; font-size: 12px; text-transform: uppercase;">GPA</strong>
+                    <p style="margin: 5px 0; color: #1e293b; font-size: 18px; font-weight: 600;">{{ student_list.GPA|floatformat:2 }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Detailed Information -->
+    <div>
+        <div class="table-container" style="margin-bottom: 20px;">
+            <div style="padding: 25px;">
+                <h3 style="margin-bottom: 20px; color: #1e293b;">Personal Information</h3>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div>
+                        <strong style="color: #64748b; font-size: 12px; text-transform: uppercase;">Date of Birth</strong>
+                        <p style="margin: 5px 0; color: #1e293b;">{{ student_list.Date_of_birth|date:"F d, Y" }}</p>
+                    </div>
+                    
+                    <div>
+                        <strong style="color: #64748b; font-size: 12px; text-transform: uppercase;">Gender</strong>
+                        <p style="margin: 5px 0; color: #1e293b;">{{ student_list.gender }}</p>
+                    </div>
+                    
+                    <div>
+                        <strong style="color: #64748b; font-size: 12px; text-transform: uppercase;">Enrollment Date</strong>
+                        <p style="margin: 5px 0; color: #1e293b;">{{ student_list.Enrollment_date|date:"F d, Y" }}</p>
+                    </div>
+                    
+                    <div>
+                        <strong style="color: #64748b; font-size: 12px; text-transform: uppercase;">Age</strong>
+                        <p style="margin: 5px 0; color: #1e293b;">{{ student_list.Date_of_birth|timesince }} old</p>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 20px;">
+                    <strong style="color: #64748b; font-size: 12px; text-transform: uppercase;">Address</strong>
+                    <p style="margin: 5px 0; color: #1e293b; line-height: 1.6;">{{ student_list.address }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <div style="padding: 25px;">
+                <h3 style="margin-bottom: 20px; color: #1e293b;">Academic Performance</h3>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div style="text-align: center; padding: 20px; background: #f8fafc; border-radius: 8px;">
+                        <div style="font-size: 24px; font-weight: 700; color: #3b82f6; margin-bottom: 5px;">{{ student_list.GPA|floatformat:2 }}</div>
+                        <div style="color: #64748b; font-size: 14px;">Current GPA</div>
+                    </div>
+                    
+                    <div style="text-align: center; padding: 20px; background: #f8fafc; border-radius: 8px;">
+                        <div style="font-size: 24px; font-weight: 700; color: #10b981; margin-bottom: 5px;">85%</div>
+                        <div style="color: #64748b; font-size: 14px;">Attendance Rate</div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 20px;">
+                    <strong style="color: #64748b; font-size: 12px; text-transform: uppercase;">Recent Activities</strong>
+                    <div style="margin-top: 10px;">
+                        <p style="color: #64748b;">No recent activities recorded for this student.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div style="display: flex; gap: 15px; justify-content: flex-end; margin-top: 30px;">
+    <a href="{% url 'deletestudent' student_list.id %}" class="btn-primary" style="background: #ef4444;" 
+       onclick="return confirm('Are you sure you want to delete this student? This action cannot be undone.')">
+        <span>🗑️</span> Delete Student
+    </a>
+    <a href="{% url 'updatestudent' student_list.id %}" class="btn-primary" style="background: #f59e0b;">
+        <span>✏️</span> Edit Student
+    </a>
+</div>
+{% endblock %}
