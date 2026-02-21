@@ -20,7 +20,6 @@ class Teacher(models.Model):
     Subject = models.CharField(max_length=30)
     Email = models.EmailField()
     number = models.IntegerField()
-    subject = models.CharField(max_length=30)
     class_name = models.CharField(max_length=50)
     def __str__(self):
         return self.Name
@@ -37,37 +36,50 @@ STATUS_CHOICE = [
         ('Transferred', 'Transferred')
     ]
 
+GRADE_CHOICES = [
+        ('1', 'Grade 1'),
+        ('2', 'Grade 2'),
+        ('3', 'Grade 3'),
+        ('4', 'Grade 4'),
+        ('5', 'Grade 5'),
+        ('6', 'Grade 6'),
+        ('7', 'Grade 7'),
+        ('8', 'Grade 8'),
+        ('9', 'Grade 9'),
+        ('10', 'Grade 10'),
+        ('11', 'Grade 11'),
+        ('12', 'Grade 12'),
+    ]
+
 class Student(models.Model):
-    name = models.CharField(max_length=20)
-    Date_of_birth = models.DateField()
+    Fullname = models.CharField(max_length=20, blank=False, null=False)
     gender = models.CharField(max_length=10, choices=GENDER_CHOICE)
     status = models.CharField(max_length=20, choices=STATUS_CHOICE)
-    admission_number = models.IntegerField()
-    address = models.TextField()
-    Enrollment_date = models.DateField()
-    classname = models.ForeignKey('ClassName', on_delete=models.CASCADE,)
-    grade = models.CharField(max_length=5)
-    section = models.CharField(max_length=1)
-    GPA = models.FloatField()   
-    class_teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE,)
+    classname = models.ForeignKey('ClassName', on_delete=models.CASCADE, related_name='student_class')
+    grade = models.CharField(max_length=2, choices=GRADE_CHOICES)
+    section = models.CharField(max_length=225, blank=False, null=False, default='A')
+    GPA = models.FloatField(max_length=4, blank=False, null=False)
+    email = models.EmailField(max_length=225, blank=False, null=False)
+    class_teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name='class_teacher_students')
+    
     def __str__(self):
         return self.name    
 
 class ClassName(models.Model):
-    name = models.CharField(max_length=5)
+    name = models.CharField(max_length=225)
     capacity = models.IntegerField()
-    students = models.ManyToManyField(Student, blank=True)
-    teacher = models.OneToOneField(Teacher, on_delete=models.CASCADE,)
+    students = models.ManyToManyField(Student, blank=True, related_name='class_students')
+    teacher = models.OneToOneField(Teacher, on_delete=models.CASCADE, related_name='class_teacher')
     Gradename = models.CharField(max_length=50)
-    students_list = models.ManyToManyField(Student, blank=True, related_name='grade')
+    students_list = models.ManyToManyField(Student, blank=True, related_name='class_students_list')
     section = models.CharField(max_length=10)
     def __str__(self):
         return self.name
 
 class Subject(models.Model):
     name = models.CharField(max_length=30)
-    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE,)
-    classname = models.ForeignKey(ClassName, on_delete=models.CASCADE)
+    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name='subject_teacher')
+    classname = models.ForeignKey(ClassName, on_delete=models.CASCADE, related_name='subject_class')
 
 class Exam(models.Model):
     EXAM_TYPES = (

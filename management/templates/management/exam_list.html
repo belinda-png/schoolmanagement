@@ -64,7 +64,7 @@
                 <td>
                     <div style="display: flex; flex-direction: column; gap: 4px;">
                         <strong>{{ exam.exam_date|date:"M d, Y" }}</strong>
-                        <small style="color: #64748b;">{{ exam.exam_date|timeago }}</small>
+                        <small style="color: #64748b;">{{ exam.exam_date|date:"g:i A" }}</small>
                     </div>
                 </td>
                 <td>
