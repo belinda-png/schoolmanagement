@@ -59,11 +59,12 @@ class Student(models.Model):
     grade = models.CharField(max_length=2, choices=GRADE_CHOICES)
     section = models.CharField(max_length=225, blank=False, null=False, default='A')
     GPA = models.FloatField(max_length=4, blank=False, null=False)
-    email = models.EmailField(max_length=225, blank=False, null=False)
+    email = models.EmailField(max_length=225, blank=False, null=False, default=0)
+    
     class_teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name='class_teacher_students')
     
     def __str__(self):
-        return self.name    
+        return self.Fullname    
 
 class ClassName(models.Model):
     name = models.CharField(max_length=225)
@@ -100,7 +101,7 @@ class Exam(models.Model):
 class Attendance(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
     date = models.DateField()
-    status = models.CharField(max_length=10, choices=[('Present', 'Present'), ('Absent', 'Absent'), ('Late', 'Late')])   
+    status = models.CharField(max_length=10, choices=[('Present', 'Present'), ('Absent', 'Absent'), ('On Leave', 'On Leave')])   
     teacher_marking = models.ForeignKey(Teacher, on_delete=models.CASCADE) 
 
     def __str__(self):
