@@ -1,19 +1,19 @@
 from django.db import models
 
 # Create your models here
-USER_CHOICE = [
-        ('Teacher', 'Teacher'),
-        ('Student', 'Student'),
-        ('Principal', 'Principal'),
-        ('Student', 'Student'),
-        ('Parent', 'Parent'),
-    ]
+# USER_CHOICE = [
+#         ('Teacher', 'Teacher'),
+#         ('Student', 'Student'),
+#         ('Principal', 'Principal'),
+#         ('Student', 'Student'),
+#         ('Parent', 'Parent'),
+#     ]
 
-class User(models.Model):
-    role = models.CharField(max_length=20, choices=USER_CHOICE)
-    email = models.EmailField(max_length=30)
-    username = models.CharField(max_length=20)
-    password = models.CharField(max_length=20)
+# class User(models.Model):
+#     role = models.CharField(max_length=20, choices=USER_CHOICE)
+#     email = models.EmailField(max_length=30)
+#     username = models.CharField(max_length=20)
+#     password = models.CharField(max_length=20)
 
 class Teacher(models.Model):
     Name = models.CharField(max_length=20)
@@ -77,26 +77,26 @@ class ClassName(models.Model):
     def __str__(self):
         return self.name
 
-class Subject(models.Model):
-    name = models.CharField(max_length=30)
-    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name='subject_teacher')
-    classname = models.ForeignKey(ClassName, on_delete=models.CASCADE, related_name='subject_class')
+# class Subject(models.Model):
+#     name = models.CharField(max_length=30)
+#     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name='subject_teacher')
+#     classname = models.ForeignKey(ClassName, on_delete=models.CASCADE, related_name='subject_class')
 
-class Exam(models.Model):
-    EXAM_TYPES = (
-            ('Midterm', 'Midterm'),
-            ('Final', 'Final'),
-            ('Quiz', 'Quiz'),
-        )
+# class Exam(models.Model):
+#     EXAM_TYPES = (
+#             ('Midterm', 'Midterm'),
+#             ('Final', 'Final'),
+#             ('Quiz', 'Quiz'),
+#         )
 
-    name = models.CharField(max_length=100)
-    exam_type = models.CharField(max_length=20, choices=EXAM_TYPES)
-    subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
-    exam_date = models.DateField()
-    total_marks = models.IntegerField()
+#     name = models.CharField(max_length=100)
+#     exam_type = models.CharField(max_length=20, choices=EXAM_TYPES)
+#     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
+#     exam_date = models.DateField()
+#     total_marks = models.IntegerField()
 
-    def __str__(self):
-        return f"{self.name} - {self.subject}"
+#     def __str__(self):
+#         return f"{self.name} - {self.subject}"
 
 class Attendance(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
@@ -107,21 +107,8 @@ class Attendance(models.Model):
     def __str__(self):
         return f"{self.student.name} - {self.date}"
 
-class Reportcard(models.Model): 
-    totalmarks = models.IntegerField(default=0, blank=False, null=False)   
-    student = models.ForeignKey(Student, on_delete=models.CASCADE)
-    exam = models.ForeignKey(Exam, on_delete=models.CASCADE)
-    position = models.CharField(max_length=20)
-    teacher_comment = models.TextField()
-    term = models.CharField(max_length=20)
-    def __str__(self):
-        return f"{self.student.name} - {self.exam}"
-
 ACTIVITY_TYPE_CHOICES = [
-    ('Admission', 'Admission'),
-    ('Exam', 'Exam'),
     ('Attendance', 'Attendance'),
-    ('Report Card', 'Report Card'),
     ('Teacher Assignment', 'Teacher Assignment'),
     ('Class Activity', 'Class Activity'),
     ('Meeting', 'Meeting'),
