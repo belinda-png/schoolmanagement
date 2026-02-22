@@ -435,12 +435,6 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{% url 'exam_list' %}" class="nav-link {% if request.resolver_match.url_name == 'exam_list' %}active{% endif %}">
-                            <i>📝</i>
-                            <span>Exams</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
                         <a href="{% url 'recent_activity_list' %}" class="nav-link {% if request.resolver_match.url_name == 'recent_activity_list' %}active{% endif %}">
                             <i>📋</i>
                             <span>Activities</span>

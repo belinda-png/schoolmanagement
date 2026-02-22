@@ -55,7 +55,24 @@ def deleteteacher(request, id):
 
 def student_list(request):
     students = Student.objects.all()
-    return render(request, 'management/student_list.html', {'students': students})
+    
+    # Calculate attendance for each student
+    students_with_attendance = []
+    for student in students:
+        # Get attendance records for this student
+        attendance_records = Attendance.objects.filter(student=student)
+        total_records = attendance_records.count()
+        
+        if total_records > 0:
+            present_records = attendance_records.filter(status='Present').count()
+            attendance_percentage = (present_records / total_records) * 100
+        else:
+            attendance_percentage = 0
+        
+        student.attendance_percentage = round(attendance_percentage, 1)
+        students_with_attendance.append(student)
+    
+    return render(request, 'management/student_list.html', {'students': students_with_attendance})
 
 def addstudent(request):
     if request.method == "POST":
@@ -98,50 +115,50 @@ def deletestudent(request, id):
     else:
         return render(request, 'management/delete_student.html', {'student_list': student_list})
 
-def exam_list(request):
-    exams = Exam.objects.all()
-    return render(request, 'management/exam_list.html', {'exams': exams})
+# def exam_list(request):
+#     exams = Exam.objects.all()
+#     return render(request, 'management/exam_list.html', {'exams': exams})
 
-def addexam(request):
-    if request.method == "POST":
-        form = AddExamForm(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Exam Created Successfully!')
-            return redirect('exam_list')
-        else:
-            messages.error(request, 'Please correct the error below.')
-    else:
-        form = AddExamForm()
-    return render(request, 'management/add_exam.html', {'form': form})
+# def addexam(request):
+#     if request.method == "POST":
+#         form = AddExamForm(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             messages.success(request, 'Exam Created Successfully!')
+#             return redirect('exam_list')
+#         else:
+#             messages.error(request, 'Please correct the error below.')
+#     else:
+#         form = AddExamForm()
+#     return render(request, 'management/add_exam.html', {'form': form})
 
-def viewexam(request, id):
-    exam_list = get_object_or_404(Exam, pk=id)
-    return render(request, 'management/view_exam.html', {'exam_list': exam_list})
+# def viewexam(request, id):
+#     exam_list = get_object_or_404(Exam, pk=id)
+#     return render(request, 'management/view_exam.html', {'exam_list': exam_list})
 
-def updateexam(request, id):
-    exam_list = get_object_or_404(Exam, pk=id)
-    if request.method == "POST":
-        form = AddExamForm(request.POST, instance=exam_list)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Exam Updated Successfully!')
-            return redirect('exam_list')
-        else:
-            form = AddExamForm(instance=exam_list)
-            messages.error(request, 'Please correct the error below.')
-    else:
-        form = AddExamForm(instance=exam_list)
-    return render(request, 'management/update_exam.html', {'form': form, 'exam_list': exam_list})
+# def updateexam(request, id):
+#     exam_list = get_object_or_404(Exam, pk=id)
+#     if request.method == "POST":
+#         form = AddExamForm(request.POST, instance=exam_list)
+#         if form.is_valid():
+#             form.save()
+#             messages.success(request, 'Exam Updated Successfully!')
+#             return redirect('exam_list')
+#         else:
+#             form = AddExamForm(instance=exam_list)
+#             messages.error(request, 'Please correct the error below.')
+#     else:
+#         form = AddExamForm(instance=exam_list)
+#     return render(request, 'management/update_exam.html', {'form': form, 'exam_list': exam_list})
 
-def deleteexam(request, id):
-    exam_list = get_object_or_404(Exam, pk=id)
-    if request.method == "POST":
-        exam_list.delete()
-        messages.success(request, 'Exam Deleted Successfully!')
-        return redirect('exam_list')
-    else:
-        return render(request, 'management/delete_exam.html', {'exam_list': exam_list})
+# def deleteexam(request, id):
+#     exam_list = get_object_or_404(Exam, pk=id)
+#     if request.method == "POST":
+#         exam_list.delete()
+#         messages.success(request, 'Exam Deleted Successfully!')
+#         return redirect('exam_list')
+#     else:
+#         return render(request, 'management/delete_exam.html', {'exam_list': exam_list})
 
 # Additional views for missing models
 def classname_list(request):
@@ -188,49 +205,49 @@ def deleteclassname(request, id):
     else:
         return render(request, 'management/delete_classname.html', {'classname': classname})
 
-def subject_list(request):
-    return render(request, 'subject_list.html', {'subjects': Subject.objects.all()})
+# def subject_list(request):
+#     return render(request, 'subject_list.html', {'subjects': Subject.objects.all()})
 
-def addsubject(request):
-    if request.method == "POST":
-        form = AddSubjectForm(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Subject Added Successfully!')
-            return redirect('subject_list')
-        else:
-            messages.error(request, 'Please correct the error below.')
-    else:
-        form = AddSubjectForm()
-    return render(request, 'management/add_subject.html', {'form': form})
+# def addsubject(request):
+#     if request.method == "POST":
+#         form = AddSubjectForm(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             messages.success(request, 'Subject Added Successfully!')
+#             return redirect('subject_list')
+#         else:
+#             messages.error(request, 'Please correct the error below.')
+#     else:
+#         form = AddSubjectForm()
+#     return render(request, 'management/add_subject.html', {'form': form})
 
-def viewsubject(request, id):
-    subject = get_object_or_404(Subject, pk=id)
-    return render(request, 'management/view_subject.html', {'subject': subject})
+# def viewsubject(request, id):
+#     subject = get_object_or_404(Subject, pk=id)
+#     return render(request, 'management/view_subject.html', {'subject': subject})
 
-def updatesubject(request, id):
-    subject = get_object_or_404(Subject, pk=id)
-    if request.method == "POST":
-        form = AddSubjectForm(request.POST, instance=subject)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Subject Updated Successfully!')
-            return redirect('subject_list')
-        else:
-            form = AddSubjectForm(instance=subject)
-            messages.error(request, 'Please correct the error below.')
-    else:
-        form = AddSubjectForm(instance=subject)
-    return render(request, 'management/update_subject.html', {'form': form, 'subject': subject})
+# def updatesubject(request, id):
+#     subject = get_object_or_404(Subject, pk=id)
+#     if request.method == "POST":
+#         form = AddSubjectForm(request.POST, instance=subject)
+#         if form.is_valid():
+#             form.save()
+#             messages.success(request, 'Subject Updated Successfully!')
+#             return redirect('subject_list')
+#         else:
+#             form = AddSubjectForm(instance=subject)
+#             messages.error(request, 'Please correct the error below.')
+#     else:
+#         form = AddSubjectForm(instance=subject)
+#     return render(request, 'management/update_subject.html', {'form': form, 'subject': subject})
 
-def deletesubject(request, id):
-    subject = get_object_or_404(Subject, pk=id)
-    if request.method == "POST":
-        subject.delete()
-        messages.success(request, 'Subject Deleted Successfully!')
-        return redirect('subject_list')
-    else:
-        return render(request, 'management/delete_subject.html', {'subject': subject})
+# def deletesubject(request, id):
+#     subject = get_object_or_404(Subject, pk=id)
+#     if request.method == "POST":
+#         subject.delete()
+#         messages.success(request, 'Subject Deleted Successfully!')
+#         return redirect('subject_list')
+#     else:
+#         return render(request, 'management/delete_subject.html', {'subject': subject})
 
 def attendance_list(request):
     return render(request, 'attendance_list.html', {'attendances': Attendance.objects.all()})
@@ -276,49 +293,49 @@ def deleteattendance(request, id):
     else:
         return render(request, 'management/delete_attendance.html', {'attendance': attendance})
 
-def reportcard_list(request):
-    return render(request, 'reportcard_list.html', {'reportcards': Reportcard.objects.all()})
+# def reportcard_list(request):
+#     return render(request, 'reportcard_list.html', {'reportcards': Reportcard.objects.all()})
 
-def addreportcard(request):
-    if request.method == "POST":
-        form = AddReportcardForm(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Reportcard Added Successfully!')
-            return redirect('reportcard_list')
-        else:
-            messages.error(request, 'Please correct the error below.')
-    else:
-        form = AddReportcardForm()
-    return render(request, 'management/add_reportcard.html', {'form': form})
+# def addreportcard(request):
+#     if request.method == "POST":
+#         form = AddReportcardForm(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             messages.success(request, 'Reportcard Added Successfully!')
+#             return redirect('reportcard_list')
+#         else:
+#             messages.error(request, 'Please correct the error below.')
+#     else:
+#         form = AddReportcardForm()
+#     return render(request, 'management/add_reportcard.html', {'form': form})
 
-def viewreportcard(request, id):
-    reportcard = get_object_or_404(Reportcard, pk=id)
-    return render(request, 'management/view_reportcard.html', {'reportcard': reportcard})
+# def viewreportcard(request, id):
+#     reportcard = get_object_or_404(Reportcard, pk=id)
+#     return render(request, 'management/view_reportcard.html', {'reportcard': reportcard})
 
-def updatereportcard(request, id):
-    reportcard = get_object_or_404(Reportcard, pk=id)
-    if request.method == "POST":
-        form = AddReportcardForm(request.POST, instance=reportcard)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Reportcard Updated Successfully!')
-            return redirect('reportcard_list')
-        else:
-            form = AddReportcardForm(instance=reportcard)
-            messages.error(request, 'Please correct the error below.')
-    else:
-        form = AddReportcardForm(instance=reportcard)
-    return render(request, 'management/update_reportcard.html', {'form': form, 'reportcard': reportcard})
+# def updatereportcard(request, id):
+#     reportcard = get_object_or_404(Reportcard, pk=id)
+#     if request.method == "POST":
+#         form = AddReportcardForm(request.POST, instance=reportcard)
+#         if form.is_valid():
+#             form.save()
+#             messages.success(request, 'Reportcard Updated Successfully!')
+#             return redirect('reportcard_list')
+#         else:
+#             form = AddReportcardForm(instance=reportcard)
+#             messages.error(request, 'Please correct the error below.')
+#     else:
+#         form = AddReportcardForm(instance=reportcard)
+#     return render(request, 'management/update_reportcard.html', {'form': form, 'reportcard': reportcard})
 
-def deletereportcard(request, id):
-    reportcard = get_object_or_404(Reportcard, pk=id)
-    if request.method == "POST":
-        reportcard.delete()
-        messages.success(request, 'Reportcard Deleted Successfully!')
-        return redirect('reportcard_list')
-    else:
-        return render(request, 'management/delete_reportcard.html', {'reportcard': reportcard})
+# def deletereportcard(request, id):
+#     reportcard = get_object_or_404(Reportcard, pk=id)
+#     if request.method == "POST":
+#         reportcard.delete()
+#         messages.success(request, 'Reportcard Deleted Successfully!')
+#         return redirect('reportcard_list')
+#     else:
+#         return render(request, 'management/delete_reportcard.html', {'reportcard': reportcard})
 
 # RecentActivity Views
 def recent_activity_list(request):
@@ -369,6 +386,7 @@ def deleterecentactivity(request, id):
 # Dashboard view to show recent activities
 def dashboard(request):
     recent_activities = RecentActivity.objects.all()[:10]  # Show last 10 activities
+    recent_students = Student.objects.all()[:6]  # Show last 6 students for dashboard
     
     # Calculate attendance data
     attendance_data = {
@@ -404,7 +422,7 @@ def dashboard(request):
     students_attendance = []
     for student in Student.objects.all():
         student_data = {
-            'name': student.name,
+            'name': student.Fullname,
             'monday': '-',
             'tuesday': '-',
             'wednesday': '-',
@@ -450,10 +468,11 @@ def dashboard(request):
     
     context = {
         'recent_activities': recent_activities,
+        'recent_students': recent_students,
         'total_students': Student.objects.count(),
         'total_teachers': Teacher.objects.count(),
         'total_classes': ClassName.objects.count(),
-        'total_exams': Exam.objects.count(),
+        # 'total_exams': Exam.objects.count(),
         'attendance_data': attendance_data,
         'total_present': total_present,
         'total_absent': total_absent,

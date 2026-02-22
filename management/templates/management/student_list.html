@@ -230,11 +230,18 @@
             <a href="{% url 'student_list' %}" class="grade-btn {% if not request.GET.grade %}active{% endif %}">
                 All Students
             </a>
-            {% for grade_num in "9,10,11,12"|split:"," %}
-            <a href="?grade={{ grade_num }}" class="grade-btn {% if request.GET.grade == grade_num %}active{% endif %}">
-                Grade {{ grade_num }}
+            <a href="?grade=9" class="grade-btn {% if request.GET.grade == '9' %}active{% endif %}">
+                Grade 9
             </a>
-            {% endfor %}
+            <a href="?grade=10" class="grade-btn {% if request.GET.grade == '10' %}active{% endif %}">
+                Grade 10
+            </a>
+            <a href="?grade=11" class="grade-btn {% if request.GET.grade == '11' %}active{% endif %}">
+                Grade 11
+            </a>
+            <a href="?grade=12" class="grade-btn {% if request.GET.grade == '12' %}active{% endif %}">
+                Grade 12
+            </a>
             <a href="#" class="more-filters-btn">
                 <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 01-.707 0l-6.414-6.414A1 1 0 016 6.586V4z"></path>
@@ -264,11 +271,11 @@
             <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 15px;">
                 <div style="display: flex; align-items: center; gap: 15px;">
                     <div style="width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; font-size: 18px;">
-                        {{ student.name|slice:":2"|upper }}
+                        {{ student.Fullname|slice:":2"|upper }}
                     </div>
                     <div>
-                        <h3 style="margin: 0; font-size: 16px; font-weight: 600; color: #1e293b;">{{ student.name }}</h3>
-                        <p style="margin: 2px 0 0 0; font-size: 14px; color: #64748b;">{{ student.admission_number }}</p>
+                        <h3 style="margin: 0; font-size: 16px; font-weight: 600; color: #1e293b;">{{ student.Fullname }}</h3>
+                        <p style="margin: 2px 0 0 0; font-size: 14px; color: #64748b;">Grade {{ student.grade }} - Section {{ student.section }}</p>
                     </div>
                 </div>
                 <div style="display: flex; gap: 8px;">
@@ -297,8 +304,8 @@
                     <span style="font-weight: 500; color: #1e293b; font-size: 14px;">{{ student.email }}</span>
                 </div>
                 <div style="display: flex; align-items: center; gap: 8px;">
-                    <span style="color: #64748b; font-size: 14px;">Phone:</span>
-                    <span style="font-weight: 500; color: #1e293b; font-size: 14px;">{{ student.phone_number }}</span>
+                    <span style="color: #64748b; font-size: 14px;">Class Teacher:</span>
+                    <span style="font-weight: 500; color: #1e293b; font-size: 14px;">{{ student.class_teacher.Fullname }}</span>
                 </div>
             </div>
 
@@ -316,7 +323,7 @@
                     <div style="font-size: 12px; color: #64748b;">GPA</div>
                 </div>
                 <div style="text-align: center;">
-                    <div style="font-size: 18px; font-weight: 700; color: #3b82f6;">85%</div>
+                    <div style="font-size: 18px; font-weight: 700; color: #3b82f6;">{{ student.attendance_percentage }}%</div>
                     <div style="font-size: 12px; color: #64748b;">Attendance</div>
                 </div>
                 <div style="text-align: center;">

@@ -15,12 +15,33 @@ from django.db import models
 #     username = models.CharField(max_length=20)
 #     password = models.CharField(max_length=20)
 
+SUBJECT_CHOICES = [
+    ('Mathematics', 'Mathematics'),
+    ('English', 'English'),
+    ('Science', 'Science'),
+    ('Social Studies', 'Social Studies'),
+    ('Physics', 'Physics'),
+    ('Chemistry', 'Chemistry'),
+    ('Biology', 'Biology'),
+    ('History', 'History'),
+    ('Geography', 'Geography'),
+    ('Computer Science', 'Computer Science'),
+    ('Physical Education', 'Physical Education'),
+    ('Art', 'Art'),
+    ('Music', 'Music'),
+    ('Economics', 'Economics'),
+    ('Business Studies', 'Business Studies'),
+    ('Literature', 'Literature'),
+    ('Religious Education', 'Religious Education'),
+    ('Foreign Language', 'Foreign Language'),
+]
+
 class Teacher(models.Model):
     Name = models.CharField(max_length=20)
-    Subject = models.CharField(max_length=30)
-    Email = models.EmailField()
-    number = models.IntegerField()
-    class_name = models.CharField(max_length=50)
+    Subject = models.CharField(max_length=30, choices=SUBJECT_CHOICES)
+    Email = models.EmailField(max_length=225, blank=False, null=False, default=0)
+    number = models.CharField(max_length=13, blank=False, null=False)
+    class_name = models.CharField(max_length=50, blank=False, null=False)
     def __str__(self):
         return self.Name
     
@@ -60,6 +81,7 @@ class Student(models.Model):
     section = models.CharField(max_length=225, blank=False, null=False, default='A')
     GPA = models.FloatField(max_length=4, blank=False, null=False)
     email = models.EmailField(max_length=225, blank=False, null=False, default=0)
+    subjects = models.CharField(max_length=50, choices=SUBJECT_CHOICES, blank=True, null=True)
     
     class_teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name='class_teacher_students')
     

@@ -20,11 +20,11 @@ urlpatterns = [
     path('students/<int:id>/delete/', views.deletestudent, name='deletestudent'),
     
     # Exam URLs
-    path('exams/', views.exam_list, name='exam_list'),
-    path('exams/add/', views.addexam, name='addexam'),
-    path('exams/<int:id>/', views.viewexam, name='viewexam'),
-    path('exams/<int:id>/update/', views.updateexam, name='updateexam'),
-    path('exams/<int:id>/delete/', views.deleteexam, name='deleteexam'),
+    # path('exams/', views.exam_list, name='exam_list'),
+    # path('exams/add/', views.addexam, name='addexam'),
+    # path('exams/<int:id>/', views.viewexam, name='viewexam'),
+    # path('exams/<int:id>/update/', views.updateexam, name='updateexam'),
+    # path('exams/<int:id>/delete/', views.deleteexam, name='deleteexam'),
     
     # ClassName URLs
     path('classes/', views.classname_list, name='classname_list'),
@@ -34,11 +34,11 @@ urlpatterns = [
     path('classes/<int:id>/delete/', views.deleteclassname, name='deleteclassname'),
     
     # Subject URLs
-    path('subjects/', views.subject_list, name='subject_list'),
-    path('subjects/add/', views.addsubject, name='addsubject'),
-    path('subjects/<int:id>/', views.viewsubject, name='viewsubject'),
-    path('subjects/<int:id>/update/', views.updatesubject, name='updatesubject'),
-    path('subjects/<int:id>/delete/', views.deletesubject, name='deletesubject'),
+    # path('subjects/', views.subject_list, name='subject_list'),
+    # path('subjects/add/', views.addsubject, name='addsubject'),
+    # path('subjects/<int:id>/', views.viewsubject, name='viewsubject'),
+    # path('subjects/<int:id>/update/', views.updatesubject, name='updatesubject'),
+    # path('subjects/<int:id>/delete/', views.deletesubject, name='deletesubject'),
     
     # Attendance URLs
     path('attendance/', views.attendance_list, name='attendance_list'),
@@ -48,11 +48,11 @@ urlpatterns = [
     path('attendance/<int:id>/delete/', views.deleteattendance, name='deleteattendance'),
     
     # Reportcard URLs
-    path('reportcards/', views.reportcard_list, name='reportcard_list'),
-    path('reportcards/add/', views.addreportcard, name='addreportcard'),
-    path('reportcards/<int:id>/', views.viewreportcard, name='viewreportcard'),
-    path('reportcards/<int:id>/update/', views.updatereportcard, name='updatereportcard'),
-    path('reportcards/<int:id>/delete/', views.deletereportcard, name='deletereportcard'),
+    # path('reportcards/', views.reportcard_list, name='reportcard_list'),
+    # path('reportcards/add/', views.addreportcard, name='addreportcard'),
+    # path('reportcards/<int:id>/', views.viewreportcard, name='viewreportcard'),
+    # path('reportcards/<int:id>/update/', views.updatereportcard, name='updatereportcard'),
+    # path('reportcards/<int:id>/delete/', views.deletereportcard, name='deletereportcard'),
     
     # RecentActivity URLs
     path('activities/', views.recent_activity_list, name='recent_activity_list'),
